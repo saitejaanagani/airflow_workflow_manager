@@ -1,4 +1,0 @@
-{
-    "template1_dag": ["dag_id", "schedule", "start_date", "owner"],
-    "template2_dag": ["dag_id", "schedule", "start_date", "owner", "email", "retries", "retry_delay"]
-}
