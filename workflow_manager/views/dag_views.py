@@ -51,8 +51,8 @@ def render_and_save_dag_file(dag):
 
 
 
-class DagManager2View(BaseView):
-    route_base = "/dagmanager2view"
+class DagManagerView(BaseView):
+    route_base = "/dagmanagerview"
     template_folder = os.path.join(os.path.dirname(__file__), "templates")
     base_template = "appbuilder/base.html"
 
@@ -121,7 +121,7 @@ class DagManager2View(BaseView):
             existing = session.query(DagMetadata).filter_by(dag_id=dag_id).first()
             if existing:
                 response = make_response('', 204)
-                response.headers['HX-Redirect'] = f"/dagmanager2view/?error=exists&msg={dag_id}"
+                response.headers['HX-Redirect'] = f"/dagmanagerview/?error=exists&msg={dag_id}"
                 return response
             new_dag = DagMetadata(
                 dag_id=dag_id,
@@ -135,13 +135,13 @@ class DagManager2View(BaseView):
             render_and_save_dag_file(new_dag)
 
             response = make_response('', 204)
-            response.headers['HX-Redirect'] = f"/dagmanager2view/?success={dag_id}"
+            response.headers['HX-Redirect'] = f"/dagmanagerview/?success={dag_id}"
             return response
 
         except Exception as e:
             session.rollback()
             response = make_response('', 204)
-            response.headers['HX-Redirect'] = f"/dagmanager2view/?error=exception&msg={str(e)}"
+            response.headers['HX-Redirect'] = f"/dagmanagerview/?error=exception&msg={str(e)}"
             return response
 
         finally:
@@ -180,17 +180,17 @@ class DagManager2View(BaseView):
                 session.commit()
                 render_and_save_dag_file(dag)
                 response = make_response('', 204)
-                response.headers['HX-Redirect'] = f"/dagmanager2view/?update_success={dag_id}"
+                response.headers['HX-Redirect'] = f"/dagmanagerview/?update_success={dag_id}"
                 return response
             else:
                 message = f'{dag_id} not found'
                 response = make_response('', 204)
-                response.headers['HX-Redirect'] = f"/dagmanager2view/?update_error=1&msg={message}"
+                response.headers['HX-Redirect'] = f"/dagmanagerview/?update_error=1&msg={message}"
                 return response
         except Exception as e:
             session.rollback()
             response = make_response('', 204)
-            response.headers['HX-Redirect'] = f"/dagmanager2view/?update_error=1&msg={str(e)}"
+            response.headers['HX-Redirect'] = f"/dagmanagerview/?update_error=1&msg={str(e)}"
             return response
 
         finally:
@@ -198,16 +198,16 @@ class DagManager2View(BaseView):
 
 
 # Register plugin
-dag_manager_view = DagManager2View()
+dag_manager_view = DagManagerView()
 
 dag_appbuilder_view = {
-    "name": "Manage DAGs 2",
+    "name": "Manage DAGs",
     "category": "Manager",
     "view": dag_manager_view
 }
 
 from airflow.plugins_manager import AirflowPlugin
 
-class DagManager2Plugin(AirflowPlugin):
-    name = "dagmanager2"
+class DagManagerPlugin(AirflowPlugin):
+    name = "dagmanager"
     appbuilder_views = [dag_appbuilder_view]

@@ -7,7 +7,7 @@
 
         <button id="create-dag-btn"
                 class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded"
-                hx-get="/dagmanager2view/select_template"
+                hx-get="/dagmanagerview/select_template"
                 hx-target="#modal-body"
                 hx-swap="innerHTML"
                 onclick="showModal()">
@@ -43,7 +43,7 @@
     {% endif %}
 
     <!-- Search -->
-    <form hx-get="/dagmanager2view/"
+    <form hx-get="/dagmanagerview/"
           hx-target="#dag-table-container"
           hx-swap="innerHTML"
           class="mb-4 flex gap-2">
