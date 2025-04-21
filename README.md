@@ -1,2 +1,3 @@
 # airflow_workflow_manager
-A modular, extensible Airflow plugin for managing DAGs and their associated datastores through a custom UI.
+
+Plugin for managing DAGs and Datastores via a custom Airflow UI.

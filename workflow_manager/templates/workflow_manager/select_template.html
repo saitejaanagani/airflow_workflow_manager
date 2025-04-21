@@ -1,0 +1,31 @@
+<div class="bg-white shadow rounded-lg p-6">
+    <script>
+        document.getElementById("create-dag-btn")?.setAttribute("disabled", "true");
+    </script>
+    <button onclick="window.location.href = window.location.pathname + window.location.search"
+        class="text-sm text-blue-600 hover:underline mb-4">
+    ← Back to List
+    </button>
+
+    <h2 class="text-xl font-semibold mb-4">Select a DAG Template</h2>
+
+    <form>
+        <label for="template" class="block mb-2 text-sm font-medium text-gray-700">
+            Template
+        </label>
+        <select id="template"
+                name="template"
+                class="w-full px-3 py-2 border rounded-lg focus:ring-blue-500"
+                hx-get="/dagmanager2view/create_form"
+                hx-target="#modal-body"
+                hx-target="#dag-form-container"
+                hx-include="[name=template]"
+                hx-trigger="change"
+                hx-swap="innerHTML">
+            <option disabled selected value="">-- Select a Template --</option>
+            {% for template in templates %}
+                <option value="{{ template.template_name }}">{{ template.template_name }}</option>
+            {% endfor %}
+        </select>
+    </form>
+</div>

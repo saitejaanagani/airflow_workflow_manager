@@ -1,0 +1,44 @@
+<table class="w-full table-auto bg-white shadow rounded-lg overflow-hidden">
+    <thead class="bg-gray-100 text-left">
+        <tr>
+            <th class="p-4">DAG ID</th>
+            <th class="p-4">Template</th>
+            <th class="p-4">Owner</th>
+            <th class="p-4">Schedule</th>
+            <th class="p-4">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for dag in dags %}
+        <tr class="border-t hover:bg-gray-50">
+            <td class="p-4">{{ dag.dag_id }}</td>
+            <td class="p-4">{{ dag.template_name }}</td>
+            <td class="p-4">{{ dag.owner }}</td>
+            <td class="p-4">{{ dag.schedule_interval }}</td>
+            <td class="p-4">
+                <button id="edit-btn-{{ dag.dag_id }}"
+                        class="text-blue-600 hover:underline"
+                        hx-get="/dagmanager2view/edit?dag_id={{ dag.dag_id }}"
+                        hx-target="#modal-body"
+                        hx-swap="innerHTML"
+                        onclick="showModal()">
+                    Edit
+                </button>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% if total_pages > 1 %}
+<div class="flex justify-center gap-2 mt-4">
+    {% for p in range(1, total_pages + 1) %}
+        <button class="px-3 py-1 border rounded {% if p == current_page %}bg-blue-600 text-white{% else %}hover:bg-gray-200{% endif %}"
+                hx-get="/dagmanager2view/?page={{ p }}&search={{ search_term }}"
+                hx-target="#dag-table-container"
+                hx-swap="innerHTML">
+            {{ p }}
+        </button>
+    {% endfor %}
+</div>
+{% endif %}

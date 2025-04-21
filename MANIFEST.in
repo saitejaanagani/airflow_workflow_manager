@@ -1,0 +1,2 @@
+recursive-include workflow_manager/templates *
+recursive-include workflow_manager/static *

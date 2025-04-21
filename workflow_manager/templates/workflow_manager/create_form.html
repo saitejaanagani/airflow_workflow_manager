@@ -1,0 +1,38 @@
+<div class="bg-white shadow rounded-lg p-6 mt-4">
+    <h2 class="text-xl font-semibold mb-4">Fill Details for <code>{{ template_name }}</code></h2>
+
+    <form hx-post="/dagmanager2view/create_dag"
+      hx-target="body"
+      hx-swap="innerHTML"
+      method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <!-- TODO: Dynamically generate form based on selected template -->
+        <input type="hidden" name="template_name" value="{{ template_name }}" />
+
+        <div class="mb-4">
+            <label class="block mb-1">DAG ID</label>
+            <input name="dag_id" class="w-full border rounded px-3 py-2" />
+        </div>
+        <div class="mb-4">
+            <label class="block mb-1">Owner</label>
+            <input name="owner" class="w-full border rounded px-3 py-2" />
+        </div>
+        <div class="mb-4">
+            <label class="block mb-1">Schedule</label>
+            <input name="schedule_interval" class="w-full border rounded px-3 py-2" />
+        </div>
+        <div class="mb-4">
+            <label class="block mb-1">Start Date</label>
+            <input name="start_date" class="w-full border rounded px-3 py-2" />
+        </div>
+
+        <button id="submit-btn"
+                class="bg-green-600 text-white px-4 py-2 rounded"
+                type="submit"
+                hx-disable>
+            <span class="htmx-indicator hidden">⏳ Saving...</span>
+            <span class="btn-text">Create DAG</span>
+        </button>
+
+    </form>
+</div>

@@ -1,0 +1,55 @@
+<button onclick="closeModal()" class="absolute top-2 right-3 text-gray-400 hover:text-black text-xl font-bold">
+    &times;
+</button>
+
+<script>
+    // Disable the specific Edit button
+    document.getElementById("edit-btn-{{ dag.dag_id }}")?.setAttribute("disabled", "true");
+</script>
+
+<div class="bg-white shadow rounded-lg p-6">
+    <h2 class="text-xl font-semibold mb-4">Edit DAG: <code>{{ dag.dag_id }}</code></h2>
+
+    <button onclick="window.location.href = window.location.pathname + window.location.search"
+            class="text-sm text-blue-600 hover:underline mb-4">
+        ← Back to List
+    </button>
+
+
+
+    <form hx-post="/dagmanager2view/update_dag"
+      hx-target="body"
+      hx-swap="innerHTML"
+      method="POST">
+
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="dag_id" value="{{ dag.dag_id }}" />
+
+        <div class="mb-4">
+            <label class="block mb-1">Template Name</label>
+            <input name="template_name" class="w-full border rounded px-3 py-2" value="{{ dag.template_name }}" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block mb-1">Owner</label>
+            <input name="owner" class="w-full border rounded px-3 py-2" value="{{ dag.owner }}" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block mb-1">Schedule</label>
+            <input name="schedule_interval" class="w-full border rounded px-3 py-2" value="{{ dag.schedule_interval }}" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block mb-1">Start Date</label>
+            <input name="start_date" class="w-full border rounded px-3 py-2" value="{{ dag.start_date }}" />
+        </div>
+        <button id="submit-btn"
+                class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded"
+                type="submit"
+                hx-disable>
+            <span class="htmx-indicator hidden">⏳ Saving...</span>
+            <span class="btn-text">Update DAG</span>
+        </button>
+    </form>
+</div>

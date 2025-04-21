@@ -1,0 +1,28 @@
+{% extends "appbuilder/base.html" %}
+
+{% block head_css %}
+    {{ super() }}
+    <!-- Tailwind via CDN (or use your built build) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.5"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="p-6 max-w-6xl mx-auto">
+        {% block inner_content %}{% endblock %}
+    </div>
+{% endblock %}
+
+{% block tail_js %}
+    {{ super() }}
+    <script>
+        function showModal() {
+            document.getElementById("modal-wrapper")?.classList.remove("hidden");
+        }
+
+        function closeModal() {
+            document.getElementById("modal-wrapper")?.classList.add("hidden");
+            document.getElementById("modal-body").innerHTML = "";
+        }
+    </script>
+{% endblock %}

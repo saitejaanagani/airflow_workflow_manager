@@ -1,0 +1,24 @@
+from airflow import DAG
+from airflow.operators.python import PythonOperator
+from datetime import datetime, timedelta
+
+def hello_world():
+    print("Hello from Python!")
+
+with DAG(
+    dag_id="{{ dag_id }}",
+    start_date={{ start_date }},
+    schedule_interval="{{ schedule }}",
+    catchup=False,
+    default_args={
+        "owner": "{{ owner }}",
+        "email": ["{{ email }}"],
+        "retries": {{ retries }},
+        "retry_delay": {{ retry_delay }}
+    }
+) as dag:
+
+    task1 = PythonOperator(
+        task_id="hello_task",
+        python_callable=hello_world
+    )

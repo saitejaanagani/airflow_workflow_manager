@@ -1,0 +1,81 @@
+{% extends "dagmanager/base.html" %}
+
+{% block inner_content %}
+<div class="p-6 max-w-6xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-semibold">Manage DAGs</h1>
+
+        <button id="create-dag-btn"
+                class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded"
+                hx-get="/dagmanager2view/select_template"
+                hx-target="#modal-body"
+                hx-swap="innerHTML"
+                onclick="showModal()">
+            Create DAG
+        </button>
+    </div>
+
+    <!-- Status messages -->
+    {% if load_error_msg %}
+        <p class="mb-4 text-red-600 font-semibold">
+        {{ load_error_msg }}
+        </p>
+    {% elif success_dag_id %}
+        <p class="mb-4 text-green-600">
+            ✅ DAG <code>{{ success_dag_id }}</code> created successfully.
+        </p>
+    {% elif error == 'exists' %}
+        <p class="mb-4 text-red-600">
+            ❌ DAG with ID <code>{{ error_dag_id }}</code> already exists.
+        </p>
+    {% elif error == 'exception' %}
+        <p class="mb-4 text-red-600">
+            ❌ Failed to create DAG: {{ error_msg }}
+        </p>
+    {% elif update_success %}
+        <p class="mb-4 text-green-700">
+            ✅ DAG <code>{{ update_success }}</code> updated successfully.
+        </p>
+    {% elif update_error %}
+        <p class="mb-4 text-red-600">
+            ❌ Failed to update DAG: {{ update_error_msg }}
+        </p>
+    {% endif %}
+
+    <!-- Search -->
+    <form hx-get="/dagmanager2view/"
+          hx-target="#dag-table-container"
+          hx-swap="innerHTML"
+          class="mb-4 flex gap-2">
+        <input type="text" name="search" placeholder="Search DAGs..." value="{{ search_term }}"
+               class="border px-3 py-2 rounded w-64" />
+        <button class="bg-blue-600 text-white px-3 py-2 rounded">Search</button>
+    </form>
+
+    <!-- Table container -->
+    <div id="dag-table-container">
+        {% include "dagmanager/list_table.html" %}
+    </div>
+
+    <!-- Modal -->
+    <div id="modal-wrapper" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 hidden">
+        <div id="modal-content" class="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6 relative">
+            <button onclick="closeModal()" class="absolute top-2 right-3 text-gray-400 hover:text-black text-xl font-bold">
+                &times;
+            </button>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<script>
+    function showModal() {
+        document.getElementById("modal-wrapper")?.classList.remove("hidden");
+    }
+
+    function closeModal() {
+        document.getElementById("modal-wrapper")?.classList.add("hidden");
+        document.getElementById("modal-body").innerHTML = "";
+    }
+</script>

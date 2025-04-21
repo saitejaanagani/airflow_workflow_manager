@@ -1,0 +1,22 @@
+from airflow import DAG
+from airflow.operators.bash import BashOperator
+from datetime import datetime
+
+default_args = {
+    'owner': '{{ owner }}'
+}
+
+with DAG(
+    dag_id='{{ dag_id }}',
+    default_args=default_args,
+    description='File cleanup DAG',
+    schedule_interval='{{ schedule_interval }}',
+    start_date=datetime.strptime('{{ start_date }}', '%Y-%m-%d'),
+    catchup=False,
+    tags=['cleanup']
+) as dag:
+
+    cleanup = BashOperator(
+        task_id='cleanup_temp_files',
+        bash_command='rm -rf /tmp/*'
+    )

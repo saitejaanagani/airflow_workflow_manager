@@ -1,0 +1,45 @@
+from airflow import DAG
+from airflow.operators.python import PythonOperator
+from datetime import datetime, timedelta
+
+default_args = {
+    'owner': '{{ owner }}',
+    'retries': 1,
+    'retry_delay': timedelta(minutes=5)
+}
+
+def extract():
+    print("Extracting data...")
+
+def transform():
+    print("Transforming data...")
+
+def load():
+    print("Loading data...")
+
+with DAG(
+    dag_id='{{ dag_id }}',
+    default_args=default_args,
+    description='A simple daily ETL DAG',
+    schedule_interval='{{ schedule_interval }}',
+    start_date=datetime.strptime('{{ start_date }}', '%Y-%m-%d'),
+    catchup=False,
+    tags=['etl']
+) as dag:
+
+    extract_task = PythonOperator(
+        task_id='extract',
+        python_callable=extract
+    )
+
+    transform_task = PythonOperator(
+        task_id='transform',
+        python_callable=transform
+    )
+
+    load_task = PythonOperator(
+        task_id='load',
+        python_callable=load
+    )
+
+    extract_task >> transform_task >> load_task
