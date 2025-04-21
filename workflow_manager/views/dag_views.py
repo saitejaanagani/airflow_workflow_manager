@@ -4,14 +4,14 @@ from flask_appbuilder import BaseView, expose
 from airflow.www.app import csrf
 import os
 
-from ingestion.repo.plugins.dag_manager_plugin.db_utils import (
+from workflow_manager.utils.db_utils import (
     get_dag_metadata,
     get_all_templates,
 )
-from ingestion.repo.plugins.dag_manager_plugin.db import Session
-from ingestion.repo.plugins.dag_manager_plugin.models.models import DagMetadata
+from workflow_manager.utils.db import Session
+from workflow_manager.models.models import DagMetadata
 from flask import make_response, flash
-from ingestion.repo.plugins.dag_manager_plugin.git_utils import push_dag_to_github
+from workflow_manager.utils.git_utils import push_dag_to_github
 
 
 def render_and_save_dag_file(dag):

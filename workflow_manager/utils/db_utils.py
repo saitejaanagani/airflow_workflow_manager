@@ -1,7 +1,7 @@
 # db_utils.py
 
-from ingestion.repo.plugins.dag_manager_plugin.models.models import DagMetadata, DagTemplate
-from ingestion.repo.plugins.dag_manager_plugin.db import Session
+from workflow_manager.models.models import DagMetadata, DagTemplate
+from workflow_manager.utils.db import Session
 
 def get_all_dag_metadata():
     session = Session
